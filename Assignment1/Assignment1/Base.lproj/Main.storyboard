@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
-    <device id="retina4_0" orientation="landscape">
+    <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -20,14 +20,14 @@
                         <viewControllerLayoutGuide type="bottom" id="4ug-Mw-9AY"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="tsR-hK-woN" userLabel="ParentView">
-                        <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JDy-Fu-Qlc" userLabel="VisibleAreaView">
-                                <rect key="frame" x="0.0" y="20" width="568" height="251"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="499"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wbc-BB-ocC" userLabel="LifeGrid">
-                                        <rect key="frame" x="183.5" y="25" width="201" height="201"/>
+                                        <rect key="frame" x="32" y="121.5" width="256" height="256"/>
                                         <color key="backgroundColor" red="0.49820095300674438" green="0.76541870832443237" blue="0.90856218338012695" alpha="0.53071489726027399" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="wbc-BB-ocC" secondAttribute="height" multiplier="1:1" id="p8M-TD-PCY"/>
@@ -67,24 +67,14 @@
                         <viewControllerLayoutGuide type="bottom" id="Djb-ko-YwX"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="QS5-Rx-YEW">
-                        <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ulu-YK-HFG" userLabel="VisibleView">
-                                <rect key="frame" x="0.0" y="0.0" width="568" height="271"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="syg-QI-QEv" userLabel="LGreen">
-                                        <rect key="frame" x="0.0" y="261" width="320" height="265"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="10"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </view>
-                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hZl-5q-KQJ" userLabel="LBlue">
-                                        <rect key="frame" x="0.0" y="18" width="320" height="235"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hZl-5q-KQJ" userLabel="LightGreen View">
+                                        <rect key="frame" x="0.0" y="0.0" width="568" height="252"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Grid Size" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5xg-9H-ItH">
                                                 <rect key="frame" x="126" y="98" width="69" height="21"/>
@@ -128,13 +118,18 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="0.2325556506849315" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="hZl-5q-KQJ" secondAttribute="height" multiplier="15:8" id="68v-No-Nzt"/>
-                                            <constraint firstAttribute="height" constant="240" id="yqy-7L-xU9"/>
-                                        </constraints>
+                                        <color key="backgroundColor" red="0.59916120409999996" green="0.67458444829999997" blue="0.38573037989999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="syg-QI-QEv" userLabel="LightBlue View">
+                                        <rect key="frame" x="0.0" y="260" width="320" height="260"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                 <integer key="value" value="10"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
@@ -142,24 +137,84 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="0.21866973462054792" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="hZl-5q-KQJ" firstAttribute="top" secondItem="ulu-YK-HFG" secondAttribute="top" id="3s7-pR-CdV"/>
-                                    <constraint firstItem="hZl-5q-KQJ" firstAttribute="leading" secondItem="ulu-YK-HFG" secondAttribute="leading" id="aKt-mS-7Aq"/>
+                                    <constraint firstItem="syg-QI-QEv" firstAttribute="top" secondItem="ulu-YK-HFG" secondAttribute="top" constant="260" id="4on-uU-v73"/>
+                                    <constraint firstItem="syg-QI-QEv" firstAttribute="top" secondItem="hZl-5q-KQJ" secondAttribute="bottom" constant="8" symbolic="YES" id="6hH-AS-cOE"/>
+                                    <constraint firstAttribute="trailing" secondItem="hZl-5q-KQJ" secondAttribute="trailing" constant="-248" id="COr-z2-JB6"/>
+                                    <constraint firstItem="hZl-5q-KQJ" firstAttribute="leading" secondItem="syg-QI-QEv" secondAttribute="leading" id="N7y-i1-KK5"/>
+                                    <constraint firstItem="syg-QI-QEv" firstAttribute="height" secondItem="ulu-YK-HFG" secondAttribute="height" multiplier="0.5" id="RZQ-Iy-uSq"/>
+                                    <constraint firstAttribute="trailing" secondItem="syg-QI-QEv" secondAttribute="trailing" id="UqZ-Do-cTG"/>
+                                    <constraint firstAttribute="trailing" secondItem="syg-QI-QEv" secondAttribute="trailing" id="YCu-pk-jbC"/>
+                                    <constraint firstAttribute="trailing" secondItem="syg-QI-QEv" secondAttribute="trailing" id="YbG-RZ-5Oe"/>
+                                    <constraint firstItem="syg-QI-QEv" firstAttribute="top" secondItem="hZl-5q-KQJ" secondAttribute="bottom" constant="8" symbolic="YES" id="YqO-jm-tub"/>
+                                    <constraint firstItem="hZl-5q-KQJ" firstAttribute="width" secondItem="ulu-YK-HFG" secondAttribute="width" multiplier="0.5" id="Yqx-R2-hmm"/>
+                                    <constraint firstAttribute="bottom" secondItem="syg-QI-QEv" secondAttribute="bottom" id="aBm-aH-UnH"/>
+                                    <constraint firstItem="syg-QI-QEv" firstAttribute="top" secondItem="hZl-5q-KQJ" secondAttribute="bottom" constant="8" id="giz-Wt-D1g"/>
+                                    <constraint firstItem="syg-QI-QEv" firstAttribute="width" secondItem="ulu-YK-HFG" secondAttribute="width" id="hEq-UE-mLM"/>
+                                    <constraint firstItem="syg-QI-QEv" firstAttribute="top" secondItem="ulu-YK-HFG" secondAttribute="top" constant="260" id="kiT-mV-5Pr"/>
+                                    <constraint firstItem="syg-QI-QEv" firstAttribute="top" secondItem="hZl-5q-KQJ" secondAttribute="bottom" id="mCa-K6-G6q"/>
+                                    <constraint firstItem="hZl-5q-KQJ" firstAttribute="top" secondItem="ulu-YK-HFG" secondAttribute="top" id="ngH-ws-BVe"/>
+                                    <constraint firstAttribute="trailing" secondItem="syg-QI-QEv" secondAttribute="trailing" id="ujd-zd-FI9"/>
+                                    <constraint firstItem="syg-QI-QEv" firstAttribute="top" secondItem="hZl-5q-KQJ" secondAttribute="bottom" constant="8" symbolic="YES" id="xM0-dO-JDs"/>
+                                    <constraint firstItem="syg-QI-QEv" firstAttribute="width" secondItem="ulu-YK-HFG" secondAttribute="width" multiplier="0.5" constant="160" id="xnB-In-CTb"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Yqx-R2-hmm"/>
+                                        <exclude reference="RZQ-Iy-uSq"/>
+                                        <exclude reference="aBm-aH-UnH"/>
+                                        <exclude reference="hEq-UE-mLM"/>
+                                        <exclude reference="kiT-mV-5Pr"/>
+                                        <exclude reference="mCa-K6-G6q"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=compact-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="Yqx-R2-hmm"/>
+                                        <exclude reference="YqO-jm-tub"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="RZQ-Iy-uSq"/>
+                                        <exclude reference="aBm-aH-UnH"/>
+                                        <exclude reference="hEq-UE-mLM"/>
+                                    </mask>
+                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="ulu-YK-HFG" secondAttribute="trailing" id="CZk-PU-eBJ"/>
+                            <constraint firstItem="ulu-YK-HFG" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leading" id="5NW-s4-SAz"/>
+                            <constraint firstAttribute="trailing" secondItem="ulu-YK-HFG" secondAttribute="trailing" id="Cbm-xv-c2S"/>
                             <constraint firstItem="ulu-YK-HFG" firstAttribute="bottom" secondItem="Djb-ko-YwX" secondAttribute="top" id="LJZ-0a-FiD"/>
-                            <constraint firstItem="ulu-YK-HFG" firstAttribute="top" secondItem="QS5-Rx-YEW" secondAttribute="top" id="NtQ-db-DWk"/>
-                            <constraint firstItem="ulu-YK-HFG" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leading" id="Xgf-7g-oBW"/>
+                            <constraint firstItem="ulu-YK-HFG" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leading" id="Lz5-4N-CIy"/>
+                            <constraint firstAttribute="trailing" secondItem="ulu-YK-HFG" secondAttribute="trailing" id="Odz-Xh-1U7"/>
+                            <constraint firstItem="ulu-YK-HFG" firstAttribute="top" secondItem="QS5-Rx-YEW" secondAttribute="top" id="Rfg-Ge-A6q"/>
+                            <constraint firstAttribute="trailing" secondItem="ulu-YK-HFG" secondAttribute="trailing" id="VpQ-ce-qpg"/>
+                            <constraint firstItem="ulu-YK-HFG" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leading" id="d3S-l6-lZL"/>
+                            <constraint firstItem="ulu-YK-HFG" firstAttribute="top" secondItem="QS5-Rx-YEW" secondAttribute="top" id="frK-gu-5hg"/>
+                            <constraint firstItem="ulu-YK-HFG" firstAttribute="top" secondItem="QS5-Rx-YEW" secondAttribute="top" id="gTJ-0l-bXo"/>
+                            <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="ulu-YK-HFG" secondAttribute="bottom" id="hkm-PQ-hvO"/>
+                            <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="ulu-YK-HFG" secondAttribute="bottom" id="k6x-Ia-dXM"/>
+                            <constraint firstItem="ulu-YK-HFG" firstAttribute="top" secondItem="QS5-Rx-YEW" secondAttribute="top" id="nZv-TR-jQk"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="Odz-Xh-1U7"/>
+                                <exclude reference="d3S-l6-lZL"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact-widthClass=compact">
+                            <mask key="constraints">
+                                <include reference="d3S-l6-lZL"/>
+                            </mask>
+                        </variation>
                     </view>
                     <tabBarItem key="tabBarItem" title="Instrumentation" image="second" id="cPa-gy-q4n"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="750" y="358.0985915492958"/>
+            <point key="canvasLocation" x="750" y="353.87323943661971"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
