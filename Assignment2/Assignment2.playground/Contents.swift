@@ -104,10 +104,8 @@ enum CellState {
     case alive,empty,born,died
     
     var isAlive: Bool {
-        switch self{
-        case .alive:
-            return true
-        case .born:
+        switch self {
+        case .alive, .born:
             return true
         default:
             return false
