@@ -133,28 +133,28 @@ struct Cell {
  */
 // ** Your Problem 4.1 answer goes here **
 /*
- 
+    Make parameter names (keyword args) unnecessary when calling it
  */
 /*:
  2. what is the type of the `transform` variable?
  */
 // ** Your Problem 4.2 answer goes here **
 /*
- 
+    Tuple
  */
 /*:
  3. what is the return type of `map2`?
  */
 // ** Your Problem 4.3 answer goes here **
 /*
- 
+    Tuple of two ints
  */
 /*:
  4. what is `T` in this declaration?
  */
 // ** Your Problem 4.4 answer goes here **
 /*
- 
+    Placeholder type name
  */
 // A function which is like the standard map function but
 // which will operate only on a two dimensional array
