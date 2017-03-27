@@ -11,21 +11,21 @@ import UIKit
 @IBDesignable
 class GridView: UIView {
     
-
   
-    @IBInspectable  var size: Int = 10 {
+    @IBInspectable  var size: Int = 5 {
         didSet {
             gameGrid = Grid(size, size)
         }
     }
 
+    @IBInspectable var btn = UIButton()
     var gameGrid = Grid(5, 5)
     
-    @IBInspectable var livingColor = UIColor.cyan,
-                        emptyColor = UIColor.lightGray,
-                        bornColor = UIColor.green,
-                        diedColor = UIColor.brown,
-                        gridColor = UIColor.darkGray
+    @IBInspectable var livingColor = UIColor(),
+                        emptyColor = UIColor(),
+                        bornColor = UIColor(),
+                        diedColor = UIColor(),
+                        gridColor = UIColor()
     
     @IBInspectable var gridWidth = CGFloat()
     
@@ -33,13 +33,12 @@ class GridView: UIView {
                    end: CGPoint) {
         let path = UIBezierPath()
         path.lineWidth = gridWidth
-        
+    
         path.move(to: start)
         path.addLine(to: end)
         gridColor.setStroke()
         path.stroke()
     }
-    
    
     override func draw(_ rect: CGRect) {
         // Drawing code
@@ -75,6 +74,12 @@ class GridView: UIView {
                 )
             )
         }
+        
+        gameGrid.positions.forEach { pos in
+        
+            print("pos: \(pos) state:\(gameGrid[pos])")
+          
+        }
         //Circle Draw
         (0 ..< size+1).forEach { i in
             (0 ..< size+1).forEach { j in
@@ -89,6 +94,7 @@ class GridView: UIView {
                 )
                 
                 var birthColor = livingColor
+                
                 if (gameGrid[(i,j)] == .empty) {
                     birthColor = emptyColor
                 } else if (gameGrid[(i,j)] == .born) {
@@ -103,8 +109,55 @@ class GridView: UIView {
             }
         }
     }
+
+
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        lastTouchedPosition = process(touches: touches)
+    }
     
-    func nextStage(){
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        lastTouchedPosition = process(touches: touches)
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        lastTouchedPosition = nil
+    }
+    
+    var lastTouchedPosition: Position?
+    
+    func process(touches: Set<UITouch>) -> Position? {
+        guard touches.count == 1 else { return nil}
+        let p = positionToCell(touch: touches.first!)
+        guard lastTouchedPosition?.row != p.row
+            || lastTouchedPosition?.col != p.col
+            else { return p }
+    
+        gameGrid[p] = gameGrid[p].toggle(value: gameGrid[p])
+        setNeedsDisplay()
+        return p
+    
+    }
+    
+    func positionToCell(touch: UITouch) -> Position {
+        
+        let gridHeight = frame.size.height
+        let gridWidth = frame.size.width
+        
+        let touchY = touch.location(in: self).y
+        let touchX = touch.location(in: self).x
+        
+        let row = touchY / gridHeight * CGFloat(size)
+        let col = touchX / gridWidth * CGFloat(size)
+        
+        return (row: Int(row), col: Int(col))
+    }
+        
+    
+
+    public func nextStage(){
+        
+        print("nextStage")
         gameGrid = gameGrid.next()
         setNeedsDisplay()
     }

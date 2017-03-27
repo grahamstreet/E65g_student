@@ -208,10 +208,6 @@ myCell.state
 myCell.state = myCell.state.toggle(value: myCell.state)
 myCell.state
 myCell.state.toggle(value: myCell.state)
-myCell.state
-myCell.state = myCell.state.toggle(value: myCell.state)
-myCell.state
-myCell.state.toggle(value: myCell.state)
 myCell.state.descripton()
 
 
