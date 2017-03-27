@@ -72,6 +72,8 @@ public enum CellState:String {
     
 }
 
+// Problem 2
+
 public struct Cell {
     var position = Position(row:0, col:0)
     var state = CellState.empty
@@ -111,6 +113,7 @@ public struct Grid {
             return self[neighbor]
         }
     }
+
     
     private func nextState(of position: Position) -> CellState {
         switch neighbors(of: position).filter({ $0.isAlive }).count {
@@ -201,6 +204,7 @@ extension Grid: Sequence {
         return HistoricGridIterator(grid: self)
     }
 }
+
 
 func gliderInitializer(row: Int, col: Int) -> CellState {
     switch (row, col) {
