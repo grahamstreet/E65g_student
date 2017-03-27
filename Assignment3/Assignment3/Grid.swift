@@ -22,15 +22,54 @@ public func positionSequence (from: Position, to: Position) -> PositionSequence 
         .flatMap { $0 }
 }
 
-public enum CellState {
-    case alive, empty, born, died
+
+public enum CellState:String {
+    case alive = "Alive",
+        empty = "Empty",
+        born = "Born",
+        died = "Died"
     
+
     public var isAlive: Bool {
         switch self {
         case .alive, .born: return true
         default: return false
         }
     }
+    
+    public func descripton() -> String {
+        return self.rawValue
+    }
+
+    static let possibleValues: [CellState] = [.alive, .empty, .born, .died]
+    
+    public func allValues() -> [CellState] {
+        return CellState.possibleValues
+    }
+    
+    public func toggle(value: CellState) -> CellState{
+        
+        switch value {
+            case .empty, .died: return CellState.alive
+            default: return CellState.empty
+            
+        }
+    }
+    
+    /* Playground code I used for testing Problem 1
+     var myCell = Cell(position: Position(3,3), state: CellState.born)
+     myCell.state.allValues()
+     myCell.state
+     myCell.state = myCell.state.toggle(value: myCell.state)
+     myCell.state
+     myCell.state.toggle(value: myCell.state)
+     myCell.state
+     myCell.state = myCell.state.toggle(value: myCell.state)
+     myCell.state
+     myCell.state.toggle(value: myCell.state)
+     myCell.state.descripton()
+ */
+    
 }
 
 public struct Cell {

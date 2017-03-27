@@ -19,8 +19,12 @@ public func positionSequence (from: Position, to: Position) -> PositionSequence 
         .flatMap { $0 }
 }
 
-public enum CellState {
-    case alive, empty, born, died
+public enum CellState:String {
+    case alive = "Alive",
+    empty = "Empty",
+    born = "Born",
+    died = "Died"
+    
     
     public var isAlive: Bool {
         switch self {
@@ -28,11 +32,35 @@ public enum CellState {
         default: return false
         }
     }
+    
+    public func descripton() -> String {
+        return self.rawValue
+    }
+    
+    static let possibleValues: [CellState] = [.alive, .empty, .born, .died]
+    
+    public func allValues() -> [CellState] {
+        return CellState.possibleValues
+    }
+    
+    public func toggle(value: CellState) -> CellState{
+        
+        /* note:  I had  "switch self" originally instead of the below "switch value",  but that didn't seem right since we are passing in "value" to the function, it seemed like that should be utilized.
+         */
+        
+        switch value {
+        case .empty, .died: return CellState.alive
+        default: return CellState.empty
+            
+        }
+        
+    }
+    
 }
-
 public struct Cell {
     var position = Position(row:0, col:0)
     var state = CellState.empty
+    
 }
 
 public struct Grid {
@@ -173,4 +201,30 @@ print (grid.description)
 for nextGrid in grid { print ("\(nextGrid.description)\n") }
 
 let theEnd = "The End"
+
+var myCell = Cell(position: Position(3,3), state: CellState.born)
+myCell.state.allValues()
+myCell.state
+myCell.state = myCell.state.toggle(value: myCell.state)
+myCell.state
+myCell.state.toggle(value: myCell.state)
+myCell.state
+myCell.state = myCell.state.toggle(value: myCell.state)
+myCell.state
+myCell.state.toggle(value: myCell.state)
+myCell.state.descripton()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
