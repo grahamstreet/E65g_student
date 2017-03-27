@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_0" orientation="portrait">
+    <device id="retina4_0" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -18,12 +18,28 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ria-qy-9hZ">
+                                <rect key="frame" x="205" y="30" width="153" height="30"/>
+                                <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="153" id="oLo-L1-Oi5"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <state key="normal" title="S T E P"/>
+                                <connections>
+                                    <action selector="nextScene:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jVD-l1-BgO"/>
+                                </connections>
+                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5c3-Jr-MMJ" customClass="GridView" customModule="Assignment3" customModuleProvider="target">
-                                <rect key="frame" x="40" y="156" width="250" height="250"/>
+                                <rect key="frame" x="209" y="85" width="150" height="150"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="qpY-jU-ERf"/>
+                                    <constraint firstAttribute="width" constant="150" id="zaV-9h-3pz"/>
+                                </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="livingColor">
                                         <color key="value" red="0.50196081400000003" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -43,39 +59,18 @@
                                     <userDefinedRuntimeAttribute type="number" keyPath="gridWidth">
                                         <integer key="value" value="2"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="size">
+                                        <integer key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ria-qy-9hZ">
-                                <rect key="frame" x="89" y="28" width="153" height="30"/>
-                                <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="VV9-KN-849"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                <state key="normal" title="S T E P"/>
-                                <connections>
-                                    <action selector="nextScene:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jVD-l1-BgO"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iE1-Ql-BDr">
-                                <rect key="frame" x="89" y="81" width="153" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Reset"/>
-                                <connections>
-                                    <action selector="reset:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cOR-Fc-bxJ"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="ria-qy-9hZ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Ar2-Wf-kUr"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="5c3-Jr-MMJ" secondAttribute="bottom" constant="162" id="Czw-Ey-e2E"/>
-                            <constraint firstItem="5c3-Jr-MMJ" firstAttribute="top" secondItem="ria-qy-9hZ" secondAttribute="bottom" constant="72" id="FGf-5j-b30"/>
-                            <constraint firstItem="ria-qy-9hZ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="68" id="jNu-UQ-LXU"/>
-                            <constraint firstItem="5c3-Jr-MMJ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="24" id="taT-Ze-htu"/>
-                            <constraint firstItem="ria-qy-9hZ" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="34" id="u6T-jQ-9GV"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="5c3-Jr-MMJ" secondAttribute="trailing" constant="14" id="yN2-yJ-TYw"/>
+                            <constraint firstItem="ria-qy-9hZ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="64" id="2P8-Lg-OVx"/>
+                            <constraint firstItem="ria-qy-9hZ" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="10" id="LGa-5u-S9Q"/>
+                            <constraint firstItem="5c3-Jr-MMJ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="s2e-W3-cXj"/>
+                            <constraint firstItem="5c3-Jr-MMJ" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="zre-Mc-xv2"/>
                         </constraints>
                     </view>
                     <connections>

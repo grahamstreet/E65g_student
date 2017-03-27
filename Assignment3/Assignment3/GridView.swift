@@ -12,14 +12,15 @@ import UIKit
 class GridView: UIView {
     
   
-    @IBInspectable  var size: Int = 5 {
+    @IBInspectable  var size: Int = 20 {
         didSet {
             gameGrid = Grid(size, size)
         }
     }
 
     @IBInspectable var btn = UIButton()
-    var gameGrid = Grid(5, 5)
+    
+    var gameGrid = Grid(20,20)
     
     @IBInspectable var livingColor = UIColor(),
                         emptyColor = UIColor(),
@@ -109,8 +110,6 @@ class GridView: UIView {
             }
         }
     }
-
-
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         lastTouchedPosition = process(touches: touches)
