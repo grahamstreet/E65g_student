@@ -9,7 +9,7 @@
 
 import UIKit
 
-@IBDesignable class GridView: UIView {
+@IBDesignable class GridView: UIView, GridViewDataSource {
     
     
     @IBInspectable var gridRows: Int = 10
@@ -20,87 +20,79 @@ import UIKit
     @IBInspectable  var bornColor: UIColor = UIColor.green
     @IBInspectable  var diedColor: UIColor = UIColor.yellow
     @IBInspectable  var gridColor: UIColor = UIColor.darkGray
-    @IBInspectable  var gridWidth: CGFloat = 3.0
+    @IBInspectable  var gridWidth: CGFloat = CGFloat(1.0)
     
-    var myGrid: GridViewDataSource?
-    
-    //end of problem 2
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-     */
+    var myGrid: GridViewDataSource?
+   
     
-    //problem 4
-    
+    public subscript (row: Int, col: Int) -> CellState {
+        get { return myGrid![row,col] }
+        set { myGrid?[row,col] = newValue }
+    }
+
     override func draw(_ rect: CGRect) {
         // Drawing code
-        //base
         let base = rect.origin
-        
-        let cSize = CGSize(
-            width: rect.size.width / CGFloat(gridCols),
-            height: rect.size.height / CGFloat(gridRows)
+   
+        let size = CGSize(
+            width: rect.size.width / CGFloat(self.gridCols),
+            height: rect.size.width / CGFloat(self.gridRows)
         )
-
         
-        
-        //gridSize
-        let gridSize = CGSize(
-            width: rect.size.width / CGFloat(cSize.width),
-            height: rect.size.height / CGFloat(cSize.height)
-        )
         //draw grid
         (0 ... gridCols).forEach { i in
             //draw vertical lines
             drawLine(
                 start: CGPoint(
-                    x: base.x + (CGFloat(i) * gridSize.width),
+                    x: base.x + (CGFloat(i) * size.width),
                     y: base.y
                 ),
                 end: CGPoint(
-                    x: base.x + (CGFloat(i) * gridSize.width),
+                    x: base.x + (CGFloat(i) * size.width),
                     y: base.y + rect.size.height
                 )
+            
             )
             //draw horizontal lines
             drawLine(
                 start: CGPoint(
                     x: base.x,
-                    y: base.y + (CGFloat(i) * gridSize.height)
+                    y: base.y + (CGFloat(i) * size.height)
                 ),
                 end: CGPoint(
                     x: base.x + rect.size.width,
-                    y: base.y + (CGFloat(i) * gridSize.height)
+                    y: base.y + (CGFloat(i) * size.height)
                 )
             )
             
         }
-        //make circles
         
+        //make circles
         (0 ..< gridCols).forEach { i in
             
             (0 ..< gridRows).forEach { j in
                 
-                let circle = UIBezierPath(ovalIn: CGRect(
-                    origin: CGPoint (
-                        x: base.x + (CGFloat(j) * gridSize.width),
-                        y: base.y + (CGFloat(i) * gridSize.height)
-                    ),
-                    size: gridSize
-                    )
+                let origin = CGPoint (
+                    x: base.x + (CGFloat(j) * size.width),
+                    y: base.y + (CGFloat(i) * size.height)
+                )
+                let subRect = CGRect(
+                    origin: origin,
+                    size: size
                 )
                 
+                let circle = UIBezierPath(ovalIn: subRect)
+        
                 var colorToBe = livingColor
-                
-                
-                // TODO: figure out why this had to be optional
-                
+ 
                 if (myGrid?[(i,j)] == .empty) {
                     colorToBe = emptyColor
                 } else if (myGrid?[(i,j)] == .born) {
+                    //print ("BORN!!!")
                     colorToBe = bornColor
                 } else if (myGrid?[(i,j)] == .died) {
+                    //print ("DIED!!!")
                     colorToBe = diedColor
                 }
                 
@@ -113,25 +105,14 @@ import UIKit
     
     func drawLine(start: CGPoint, end: CGPoint) {
         let linePath = UIBezierPath()
-        //set the path's line width to the width of the stroke
+     
         linePath.lineWidth = gridWidth
-        
-        //move the initial point of the path
-        //to the start of the horizontal stroke
         linePath.move(to: start)
-        
-        //add a point to the path at the end of the stroke
         linePath.addLine(to: end)
-        
-        //draw the stroke
-        gridColor.setStroke()
+   
         linePath.stroke()
     }
-    //end of problem 4
-    
-    // problem 5
-    // touch events
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         lastTouchedPosition = process(touches: touches)
     }
@@ -143,6 +124,10 @@ import UIKit
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         lastTouchedPosition = nil
+        
+        let engine = StandardEngine.shared()
+        engine.engineUpdateNotify()
+
     }
     
     var lastTouchedPosition: Position?
@@ -150,13 +135,15 @@ import UIKit
     func process(touches: Set<UITouch>) -> Position? {
         guard touches.count == 1 else { return nil }
         let pos = convert(touch: touches.first!)
+        
         guard lastTouchedPosition?.row != pos.row
             || lastTouchedPosition?.col != pos.col
             else { return pos }
+        
         if myGrid != nil {
             myGrid![pos.row, pos.col] = myGrid![pos.row, pos.col].isAlive ? .empty : .alive
         }
-        setNeedsDisplay()
+        setNeedsDisplay()  //^
         return pos
     }
     

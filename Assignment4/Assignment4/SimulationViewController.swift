@@ -10,29 +10,41 @@ import UIKit
 
 class SimulationViewController: UIViewController , GridViewDataSource, EngineDelegate {
     
-  
+    @IBInspectable var backgroundColorForTab : UIColor = UIColor.init(
+        red: CGFloat(244/255),
+        green: CGFloat(244/255),
+        blue: CGFloat(255/255),
+        alpha: CGFloat(0.2))
+    
     @IBOutlet weak var gridView: GridView!
-
     @IBOutlet weak var stepButton: UIButton!
   
     var engine: StandardEngine!
     var delegate: EngineDelegate?
     
-    var refreshRate: Double = 0.0
-    var rows: Int = 10
-    var cols: Int = 10
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = backgroundColorForTab
         
         engine = StandardEngine.shared()
         engine.delegate = self
         gridView.myGrid = self
         self.gridView.gridRows = engine.rows
         self.gridView.gridCols = engine.cols
-        gridView.setNeedsDisplay()
-
+        
+        
+        let nc = NotificationCenter.default
+        let name = Notification.Name(rawValue: "EngineUpdate")
+        nc.addObserver(
+            forName: name,
+            object: nil,
+            queue: nil) { (n) in
+                self.gridView.setNeedsDisplay()
+        }
+        
+        
+       
     }
 
     override func didReceiveMemoryWarning() {

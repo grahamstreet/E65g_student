@@ -8,7 +8,7 @@ import Foundation
 
 public typealias GridSize = (rows: Int, cols: Int)
 
-fileprivate func norm(_ val: Int, to size: Int) -> Int { return ((val % size) + size) % size }
+fileprivate func normalize(_ val: Int, to size: Int) -> Int { return ((val % size) + size) % size }
 
 public enum CellState {
     case alive, empty, born, died
@@ -88,13 +88,14 @@ extension GridProtocol {
     }
 }
 
-public struct Grid: GridProtocol, GridViewDataSource {
+public struct Grid: GridProtocol {
+  
     private var _cells: [[CellState]]
     public var size: GridSize
     
     public subscript (row: Int, col: Int) -> CellState {
-        get { return _cells[norm(row, to: size.rows)][norm(col, to: size.cols)] }
-        set { _cells[norm(row, to: size.rows)][norm(col, to: size.cols)] = newValue }
+        get { return _cells[normalize(row, to: size.rows)][normalize(col, to: size.cols)] }
+        set { _cells[normalize(row, to: size.rows)][normalize(col, to: size.cols)] = newValue }
     }
     
     public init(_ size: GridSize, cellInitializer: (Position) -> CellState = { _ in .empty }) {
@@ -107,32 +108,7 @@ public struct Grid: GridProtocol, GridViewDataSource {
         self.size = size
         lazyPositions(self.size).forEach { self[$0.row, $0.col] = cellInitializer($0) }
     }
-    
-    public var description: String {
-        return lazyPositions(self.size)
-            .map { (self[$0.row, $0.col].isAlive ? "*" : " ") + ($0.col == self.size.cols - 1 ? "\n" : "") }
-            .joined()
-    }
-    
-    private func neighborStates(of pos: Position) -> [CellState] {
-        return offsets.map { self[pos.row + $0.row, pos.col + $0.col] }
-    }
-    
-    private func nextState(of pos: Position) -> CellState {
-        let iAmAlive = self[pos.row, pos.col].isAlive
-        let numLivingNeighbors = neighborStates(of: pos).filter({ $0.isAlive }).count
-        switch numLivingNeighbors {
-        case 2 where iAmAlive,
-             3: return iAmAlive ? .alive : .born
-        default: return iAmAlive ? .died  : .empty
-        }
-    }
-    
-    public func next() -> Grid {
-        var nextGrid = Grid(size) { _ in .empty }
-        lazyPositions(self.size).forEach { nextGrid[$0.row, $0.col] = self.nextState(of: $0) }
-        return nextGrid
-    }
+
 }
 
 extension Grid: Sequence {
@@ -208,32 +184,49 @@ protocol EngineProtocol {
     func step() -> GridProtocol
 }
 
-class StandardEngine: EngineProtocol {
+public class StandardEngine: EngineProtocol {
+    
+    
+    static let engine: StandardEngine = StandardEngine(rows: 10, cols: 10, refreshRate:1.0)
+    
+    var aliveCount = 0
+    var bornCount = 0
+    var deadCount = 0
+    var emptyCount = 0
+    
+    
+    var timerOn = false
+    var instantiationCount:  Int = 1
     var delegate: EngineDelegate?
     var grid: GridProtocol
     var refreshTimer: Timer?
-    var refreshRate: Double = 0.0 {
+
+    var refreshRate: TimeInterval = 0.0 {
         didSet {
-            if (timerOn && (refreshRate > 0.0)) {
+            if (self.timerOn && (refreshRate > 0.0)) {
                 refreshTimer = Timer.scheduledTimer(
-                    withTimeInterval: refreshRate,
+                    withTimeInterval: refreshRate / 10,
                     repeats: true
                 ) { (t: Timer) in
                     _ = self.step()
+     
+                    
+                    if !self.timerOn {
+                        self.refreshTimer?.invalidate()
+                        self.refreshTimer = nil
+                    }
                 }
-            }
-            else {
+            } else {
                 refreshTimer?.invalidate()
                 refreshTimer = nil
             }
         }
     }
-    var timerOn = false
+    
     var rows: Int
     var cols: Int
     
-    private static var engine: StandardEngine = StandardEngine(rows: 10, cols: 10, refreshRate: 1.0)
-    
+        
     init(rows: Int, cols: Int, refreshRate: Double) {
         self.grid = Grid(GridSize(rows: rows, cols: cols))
         self.rows = rows
@@ -250,23 +243,47 @@ class StandardEngine: EngineProtocol {
         return grid
     }
     
-    func updateNumRowsOrCols(rowOrCol: String, num: Int) {
-        if rowOrCol == "row"
-        {
-            StandardEngine.engine.rows = num
-            self.rows = num
-        }
-        else
-        {
-            StandardEngine.engine.cols = num
-            self.cols = num
-        }
+    // since rows and columns are == in 1:1,  it doesn't matter which is specified.
+    func updateRowCol(num: Int) {
+        StandardEngine.engine.rows = num
+        self.rows = num
+        StandardEngine.engine.cols = num
+        self.cols = num
+        
         
         // Create New Grid Instance
         grid = Grid(GridSize(rows: self.rows, cols: self.cols))
         delegate?.engineDidUpdate(withGrid: grid)
         
         engineUpdateNotify()
+    }
+    
+    public func updateCounts(myGrid:  GridProtocol)
+    {
+        
+        aliveCount = 0
+        bornCount = 0
+        deadCount = 0
+        emptyCount = 0
+
+        (0 ..< myGrid.size.cols).forEach { i in
+            
+            (0 ..< myGrid.size.rows).forEach { j in
+                
+                
+                if (myGrid[(i,j)] == .empty) {
+                    emptyCount = emptyCount + 1
+                } else if (myGrid[(i,j)] == .born) {
+                    bornCount = bornCount + 1
+                } else if (myGrid[(i,j)] == .died) {
+                    emptyCount = emptyCount + 1
+                } else if (myGrid[(i,j)] == .alive){
+                    aliveCount = aliveCount + 1
+                }
+                
+            }
+        }
+
     }
     
     public func engineUpdateNotify()
@@ -277,16 +294,6 @@ class StandardEngine: EngineProtocol {
                              object: nil,
                              userInfo: ["engine" : self])
         nc.post(n)
-    }
-    
-    // MARK: Engine toggleTimer
-    func toggleTimer(switchOn: Bool) {
-        // set the internal switch state value to what was passed in by the function
-        // need to set refreshRate equal to itself to force the didSet{} code to run
-        // we want this code to run as it enables/disables the timer through the
-        // invalide method
-        timerOn = switchOn
-        refreshRate = StandardEngine.engine.refreshRate
     }
     
     class func shared() -> StandardEngine {
