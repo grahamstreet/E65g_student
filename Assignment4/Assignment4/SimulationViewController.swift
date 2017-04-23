@@ -14,15 +14,15 @@ class SimulationViewController: UIViewController , GridViewDataSource, EngineDel
         red: CGFloat(244/255),
         green: CGFloat(244/255),
         blue: CGFloat(255/255),
-        alpha: CGFloat(0.2))
+        alpha: CGFloat(0.8))
+    
     
     @IBOutlet weak var gridView: GridView!
     @IBOutlet weak var stepButton: UIButton!
   
     var engine: StandardEngine!
     var delegate: EngineDelegate?
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = backgroundColorForTab
@@ -42,15 +42,13 @@ class SimulationViewController: UIViewController , GridViewDataSource, EngineDel
             queue: nil) { (n) in
                 self.gridView.setNeedsDisplay()
         }
-        
-        
-       
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     func engineDidUpdate(withGrid: GridProtocol) {
         self.gridView.gridRows = StandardEngine.shared().rows
         self.gridView.gridCols = StandardEngine.shared().cols

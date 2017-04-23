@@ -16,7 +16,6 @@ class InstrumentationViewController: UIViewController {
     
     @IBOutlet weak var rowEntry: UITextField!
     @IBOutlet weak var colEntry: UITextField!
-    
     @IBOutlet weak var rowStep: UIStepper!
     @IBOutlet weak var colStep: UIStepper!
     @IBOutlet weak var refreshRate: UISlider!
@@ -24,12 +23,12 @@ class InstrumentationViewController: UIViewController {
 
     @IBOutlet weak var refreshIndication: UILabel!
     // Shows now that it knows the type
+    
     @IBInspectable var backgroundColorForTab : UIColor = UIColor.init(
         red: CGFloat(244/255),
         green: CGFloat(244/255),
         blue: CGFloat(255/255),
-        alpha: CGFloat(0.2))
-    
+        alpha: CGFloat(0.8))
     
     @IBAction func rowValueChanged(_ sender: UITextField) {
         guard let rowText = sender.text
@@ -46,7 +45,6 @@ class InstrumentationViewController: UIViewController {
         colStep.value = Double(num)
         StandardEngine.shared().updateRowCol(num: num)
         colEntry.text = rowEntry.text
-
     }
     
     @IBAction func colValueChanged(_ sender: UITextField) {
@@ -66,6 +64,7 @@ class InstrumentationViewController: UIViewController {
         
         rowEntry.text = colEntry.text
     }
+
     
     @IBAction func rowStep(_ sender: UIStepper) {
         let numRows = Int(sender.value)
@@ -86,40 +85,35 @@ class InstrumentationViewController: UIViewController {
         rowEntry.text = colEntry.text
     }
     
-  
-    
-    
-    @IBAction func refreshChanged(_ sender: UISlider) {
-        if (autoRefresh.isOn) {
-            StandardEngine.shared().refreshRate = 0.0 // clean up timers
-            StandardEngine.shared().refreshRate = TimeInterval(sender.value)
-        }
-        let newRefreshString = String(format: "%.1f", sender.value)
-        self.refreshIndication.text = "\(newRefreshString) (hz)"
-        print("refresh rate out \(newRefreshString)")
-    }
-    
-    
     private func toTimeInterval(_ refreshRate : Float) -> TimeInterval {
         return 1/Double(refreshRate)
     }
     
+
+    @IBAction func refreshChanged(_ sender: UISlider) {
+        if (autoRefresh.isOn) {
+            StandardEngine.shared().refreshRate = 0.0
+            StandardEngine.shared().refreshRate = TimeInterval(toTimeInterval(sender.value))
+        }
+        let newRefreshString = String(format: "%.1f", sender.value)
+        self.refreshIndication.text = "\(newRefreshString) (hz)"
+        print("refreshRate \(StandardEngine.shared().refreshRate)")
+    }
+    
+    
+
     
     @IBAction func autoRefreshChanged(_ sender: UISwitch) {
-     
+    
+        StandardEngine.shared().refreshRate = TimeInterval(refreshRate.value)
+
         if sender.isOn {
-            
-            // check and see if slider hasn't yet been adjusted-- set refreshRate
-            // programatically.
-            StandardEngine.shared().refreshRate = TimeInterval(refreshRate.value)
             StandardEngine.shared().timerOn = true
-            print("shared timer turned on.")
+            print("shared timer turned on. refreshRate \(StandardEngine.shared().refreshRate)")
         } else {
             StandardEngine.shared().timerOn = false
             print("shared timer turned off.")
-
         }
-    
     }
     
     override func viewDidLoad() {
@@ -130,7 +124,6 @@ class InstrumentationViewController: UIViewController {
         colEntry.text = "\(StandardEngine.shared().cols)"
         let liveRefreshDisplay = "\(refreshRate.value) hz"
         refreshIndication.text = liveRefreshDisplay
-        
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -152,8 +145,6 @@ class InstrumentationViewController: UIViewController {
         // show the alert
         self.present(alert, animated: true, completion: nil)
     }
-    
-   
 
 }
 

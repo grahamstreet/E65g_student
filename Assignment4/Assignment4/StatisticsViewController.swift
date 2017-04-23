@@ -11,8 +11,13 @@ import UIKit
 class StatisticsViewController: UIViewController {
 
     // Shows now that it knows the type
-    @IBInspectable var backgroundColorForTab : UIColor = UIColor.clear
-
+    @IBInspectable var backgroundColorForTab :
+        UIColor = UIColor.init(
+            red: CGFloat(244/255),
+            green: CGFloat(255/255),
+            blue: CGFloat(244/255),
+            alpha: CGFloat(0.8))
+    
     @IBOutlet weak var aliveCount: UILabel!
     @IBOutlet weak var bornCount: UILabel!
     @IBOutlet weak var deadCount: UILabel!
@@ -39,8 +44,13 @@ class StatisticsViewController: UIViewController {
         bornCount.text = "\(StandardEngine.shared().bornCount)"
         deadCount.text = "\(StandardEngine.shared().deadCount)"
         emptyCount.text = "\(StandardEngine.shared().emptyCount)"
-        
-        
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        engine.updateCounts(myGrid: engine.grid)
+  
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

@@ -112,6 +112,7 @@ public struct Grid: GridProtocol {
 }
 
 extension Grid: Sequence {
+    
     fileprivate var living: [Position] {
         return lazyPositions(self.size).filter { return  self[$0.row, $0.col].isAlive   }
     }
@@ -186,14 +187,12 @@ protocol EngineProtocol {
 
 public class StandardEngine: EngineProtocol {
     
-    
     static let engine: StandardEngine = StandardEngine(rows: 10, cols: 10, refreshRate:1.0)
     
     var aliveCount = 0
     var bornCount = 0
     var deadCount = 0
     var emptyCount = 0
-    
     
     var timerOn = false
     var instantiationCount:  Int = 1
@@ -203,17 +202,23 @@ public class StandardEngine: EngineProtocol {
 
     var refreshRate: TimeInterval = 0.0 {
         didSet {
-            if (self.timerOn && (refreshRate > 0.0)) {
+            if ((refreshRate > 0.0)) {
                 refreshTimer = Timer.scheduledTimer(
-                    withTimeInterval: refreshRate / 10,
+                    withTimeInterval: refreshRate,
                     repeats: true
                 ) { (t: Timer) in
+                    
+                    guard self.refreshTimer != nil else {
+                        // This was a problem for Van at the end of Lecture 6. Unclear on what resolution was.
+                        return
+                    }
                     _ = self.step()
-     
+                    print("<< timer step >>")
                     
                     if !self.timerOn {
                         self.refreshTimer?.invalidate()
                         self.refreshTimer = nil
+                        print("timer off!")
                     }
                 }
             } else {
@@ -226,7 +231,6 @@ public class StandardEngine: EngineProtocol {
     var rows: Int
     var cols: Int
     
-        
     init(rows: Int, cols: Int, refreshRate: Double) {
         self.grid = Grid(GridSize(rows: rows, cols: cols))
         self.rows = rows
@@ -250,40 +254,34 @@ public class StandardEngine: EngineProtocol {
         StandardEngine.engine.cols = num
         self.cols = num
         
-        
         // Create New Grid Instance
         grid = Grid(GridSize(rows: self.rows, cols: self.cols))
         delegate?.engineDidUpdate(withGrid: grid)
-        
+
         engineUpdateNotify()
     }
     
     public func updateCounts(myGrid:  GridProtocol)
     {
-        
         aliveCount = 0
         bornCount = 0
         deadCount = 0
         emptyCount = 0
 
         (0 ..< myGrid.size.cols).forEach { i in
-            
             (0 ..< myGrid.size.rows).forEach { j in
-                
                 
                 if (myGrid[(i,j)] == .empty) {
                     emptyCount = emptyCount + 1
                 } else if (myGrid[(i,j)] == .born) {
                     bornCount = bornCount + 1
                 } else if (myGrid[(i,j)] == .died) {
-                    emptyCount = emptyCount + 1
+                    deadCount = deadCount + 1
                 } else if (myGrid[(i,j)] == .alive){
                     aliveCount = aliveCount + 1
                 }
-                
             }
         }
-
     }
     
     public func engineUpdateNotify()

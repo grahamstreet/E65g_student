@@ -15,11 +15,12 @@ import UIKit
     @IBInspectable var gridRows: Int = 10
     @IBInspectable var gridCols: Int = 10
 
-    @IBInspectable  var livingColor: UIColor = UIColor.red
-    @IBInspectable  var emptyColor: UIColor = UIColor.gray
+    @IBInspectable  var livingColor: UIColor = UIColor.magenta
+    @IBInspectable  var emptyColor: UIColor = UIColor.purple
     @IBInspectable  var bornColor: UIColor = UIColor.green
-    @IBInspectable  var diedColor: UIColor = UIColor.yellow
-    @IBInspectable  var gridColor: UIColor = UIColor.darkGray
+    @IBInspectable  var diedColor: UIColor = UIColor.red
+    @IBInspectable  var gridColor: UIColor = UIColor.white
+    
     @IBInspectable  var gridWidth: CGFloat = CGFloat(1.0)
     
 
@@ -89,13 +90,12 @@ import UIKit
                 if (myGrid?[(i,j)] == .empty) {
                     colorToBe = emptyColor
                 } else if (myGrid?[(i,j)] == .born) {
-                    //print ("BORN!!!")
                     colorToBe = bornColor
                 } else if (myGrid?[(i,j)] == .died) {
-                    //print ("DIED!!!")
                     colorToBe = diedColor
+                } else if (myGrid?[(i,j)] == .alive) {
                 }
-                
+
                 colorToBe.setFill()
                 circle.fill()
                 
