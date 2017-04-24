@@ -14,19 +14,15 @@ import UIKit
     
     @IBInspectable var gridRows: Int = 10
     @IBInspectable var gridCols: Int = 10
-
     @IBInspectable  var livingColor: UIColor = UIColor.magenta
     @IBInspectable  var emptyColor: UIColor = UIColor.purple
     @IBInspectable  var bornColor: UIColor = UIColor.green
     @IBInspectable  var diedColor: UIColor = UIColor.red
     @IBInspectable  var gridColor: UIColor = UIColor.white
-    
     @IBInspectable  var gridWidth: CGFloat = CGFloat(1.0)
     
-
     var myGrid: GridViewDataSource?
    
-    
     public subscript (row: Int, col: Int) -> CellState {
         get { return myGrid![row,col] }
         set { myGrid?[row,col] = newValue }
@@ -84,7 +80,6 @@ import UIKit
                 )
                 
                 let circle = UIBezierPath(ovalIn: subRect)
-        
                 var colorToBe = livingColor
  
                 if (myGrid?[(i,j)] == .empty) {
@@ -143,7 +138,7 @@ import UIKit
         if myGrid != nil {
             myGrid![pos.row, pos.col] = myGrid![pos.row, pos.col].isAlive ? .empty : .alive
         }
-        setNeedsDisplay()  //^
+        setNeedsDisplay() 
         return pos
     }
     

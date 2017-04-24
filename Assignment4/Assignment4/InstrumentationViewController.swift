@@ -20,9 +20,7 @@ class InstrumentationViewController: UIViewController {
     @IBOutlet weak var colStep: UIStepper!
     @IBOutlet weak var refreshRate: UISlider!
     @IBOutlet weak var autoRefresh: UISwitch!
-
     @IBOutlet weak var refreshIndication: UILabel!
-    // Shows now that it knows the type
     
     @IBInspectable var backgroundColorForTab : UIColor = UIColor.init(
         red: CGFloat(244/255),
@@ -97,8 +95,7 @@ class InstrumentationViewController: UIViewController {
         }
         let newRefreshString = String(format: "%.1f", sender.value)
         self.refreshIndication.text = "\(newRefreshString) (hz)"
-        print("refreshRate \(StandardEngine.shared().refreshRate)")
-    }
+        }
     
     
 
@@ -109,10 +106,8 @@ class InstrumentationViewController: UIViewController {
 
         if sender.isOn {
             StandardEngine.shared().timerOn = true
-            print("shared timer turned on. refreshRate \(StandardEngine.shared().refreshRate)")
         } else {
             StandardEngine.shared().timerOn = false
-            print("shared timer turned off.")
         }
     }
     
