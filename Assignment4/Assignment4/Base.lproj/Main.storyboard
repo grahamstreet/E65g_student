@@ -78,7 +78,7 @@
                                                     <action selector="colValueChanged:" destination="9pv-A4-QxB" eventType="editingDidEnd" id="y6g-2L-3oM"/>
                                                 </connections>
                                             </textField>
-                                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minimumValue="10" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="Vz5-KL-xUS">
+                                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minimumValue="10" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="Vz5-KL-xUS">
                                                 <rect key="frame" x="138" y="45" width="94" height="29"/>
                                                 <connections>
                                                     <action selector="colStep:" destination="9pv-A4-QxB" eventType="valueChanged" id="sa6-SS-IJS"/>
@@ -87,10 +87,13 @@
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
+                                            <constraint firstItem="Vz5-KL-xUS" firstAttribute="trailing" secondItem="RJq-S5-RNO" secondAttribute="trailing" id="2nM-u1-YFv"/>
                                             <constraint firstItem="w91-Vc-fB1" firstAttribute="leading" secondItem="bG7-8G-k00" secondAttribute="leading" id="ECs-H1-wqa"/>
+                                            <constraint firstItem="Vz5-KL-xUS" firstAttribute="height" secondItem="RJq-S5-RNO" secondAttribute="height" id="H0V-15-QUw"/>
                                             <constraint firstAttribute="trailing" secondItem="RJq-S5-RNO" secondAttribute="trailing" constant="8" id="QAt-0c-phV"/>
                                             <constraint firstItem="Fc2-22-BfT" firstAttribute="top" secondItem="IUU-Zn-yAi" secondAttribute="top" constant="3" id="QrK-Vl-y9A"/>
                                             <constraint firstItem="Fc2-22-BfT" firstAttribute="leading" secondItem="w91-Vc-fB1" secondAttribute="trailing" constant="-4.5" id="Ybs-E9-flB"/>
+                                            <constraint firstItem="Vz5-KL-xUS" firstAttribute="width" secondItem="RJq-S5-RNO" secondAttribute="width" id="Zok-f1-V8l"/>
                                             <constraint firstItem="Vz5-KL-xUS" firstAttribute="top" secondItem="RJq-S5-RNO" secondAttribute="bottom" constant="13" id="eJM-vT-moc"/>
                                             <constraint firstItem="w91-Vc-fB1" firstAttribute="top" secondItem="IUU-Zn-yAi" secondAttribute="top" constant="8" id="k8V-Tm-oWb"/>
                                             <constraint firstItem="RJq-S5-RNO" firstAttribute="top" secondItem="IUU-Zn-yAi" secondAttribute="top" constant="3" id="mbB-3e-qWQ"/>
