@@ -49,7 +49,7 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var rowEntry: UITextField!
-    @IBOutlet weak var colEntry: UITextField!
+    //@IBOutlet weak var colEntry: UITextField!
     @IBOutlet weak var rowStep: UIStepper!
     @IBOutlet weak var colStep: UIStepper!
     @IBOutlet weak var refreshRate: UISlider!
@@ -76,27 +76,10 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
         // since rows == cols,  update cols too.
         colStep.value = Double(num)
         StandardEngine.shared().updateRowCol(num: num)
-        colEntry.text = rowEntry.text
+        
     }
     
-    @IBAction func colValueChanged(_ sender: UITextField) {
-        guard let colText = sender.text
-            else {return}
-        guard let num = Int(colText) else {
-            alert(withMessage: "Hey! that wasn't valid. Stick to numbers please.")
-            return
-        }
-        
-        colStep.value = Double(num)
-        StandardEngine.shared().updateRowCol(num: num)
-        
-        // since rows == cols,  update rows too.
-        rowStep.value = Double(num)
-        StandardEngine.shared().updateRowCol(num: num)
-        
-        rowEntry.text = colEntry.text
-    }
-
+   
     
     @IBAction func rowStep(_ sender: UIStepper) {
         let numRows = Int(sender.value)
@@ -104,19 +87,11 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
         StandardEngine.shared().updateRowCol(num: numRows)
         
         // since rows == cols...
-        colEntry.text = rowEntry.text
+        rowEntry.text = rowEntry.text
         
     }
     
-    @IBAction func colStep(_ sender: UIStepper) {
-        let numCols = Int(sender.value)
-        colEntry.text = "\(numCols)"
-        StandardEngine.shared().updateRowCol(num: numCols)
-        
-        // since rows == cols...
-        rowEntry.text = colEntry.text
-    }
-    
+       
     private func toTimeInterval(_ refreshRate : Float) -> TimeInterval {
         return 1/Double(refreshRate)
     }
@@ -165,7 +140,7 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
     
         self.view.backgroundColor = backgroundColorForTab
         rowEntry.text = "\(StandardEngine.shared().rows)"
-        colEntry.text = "\(StandardEngine.shared().cols)"
+        //colEntry.text = "\(StandardEngine.shared().cols)"
         let liveRefreshDisplay = "\(refreshRate.value) hz"
         refreshIndication.text = liveRefreshDisplay
         
