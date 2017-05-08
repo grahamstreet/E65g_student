@@ -30,8 +30,6 @@ public struct Position: Equatable {
     }
 }
 
-
-
 public protocol GridViewDataSource {
     subscript (row: Int, col: Int) -> CellState { get set }
 }
@@ -43,8 +41,6 @@ public protocol GridProtocol: CustomStringConvertible {
     func next() -> Self
 }
 
-
-
 public let lazyPositions = { (size: GridSize) in
     return (0 ..< size.rows)
         .lazy
@@ -52,7 +48,6 @@ public let lazyPositions = { (size: GridSize) in
         .flatMap { $0 }
         .map { Position(row: $0.0, col: $0.1) }
 }
-
 
 let offsets: [Position] = [
     Position(row: -1, col:  -1), Position(row: -1, col:  0), Position(row: -1, col:  1),
@@ -108,68 +103,8 @@ public struct Grid: GridProtocol {
         self.size = size
         lazyPositions(self.size).forEach { self[$0.row, $0.col] = cellInitializer($0) }
     }
-
 }
 
-extension Grid: Sequence {
-    
-    fileprivate var living: [Position] {
-        return lazyPositions(self.size).filter { return  self[$0.row, $0.col].isAlive   }
-    }
-    
-    public struct GridIterator: IteratorProtocol {
-        private class GridHistory: Equatable {
-            let positions: [Position]
-            let previous:  GridHistory?
-            
-            static func == (lhs: GridHistory, rhs: GridHistory) -> Bool {
-                return lhs.positions.elementsEqual(rhs.positions, by: ==)
-            }
-            
-            init(_ positions: [Position], _ previous: GridHistory? = nil) {
-                self.positions = positions
-                self.previous = previous
-            }
-            
-            var hasCycle: Bool {
-                var prev = previous
-                while prev != nil {
-                    if self == prev { return true }
-                    prev = prev!.previous
-                }
-                return false
-            }
-        }
-        
-        private var grid: GridProtocol
-        private var history: GridHistory!
-        
-        init(grid: Grid) {
-            self.grid = grid
-            self.history = GridHistory(grid.living)
-        }
-        
-        public mutating func next() -> GridProtocol? {
-            if history.hasCycle { return nil }
-            let newGrid:Grid = grid.next() as! Grid
-            history = GridHistory(newGrid.living, history)
-            grid = newGrid
-            return grid
-        }
-    }
-    
-    public func makeIterator() -> GridIterator { return GridIterator(grid: self) }
-}
-
-public extension Grid {
-    public static func gliderInitializer(pos: Position) -> CellState {
-        switch pos {
-        case Position(row: 0, col: 1), Position(row: 1, col: 2), Position(row: 2, col: 0),
-             Position(row: 2, col: 1), Position(row: 2, col: 2): return .alive
-        default: return .empty
-        }
-    }
-}
 
 protocol EngineDelegate {
     func engineDidUpdate(withGrid: GridProtocol)
@@ -188,13 +123,11 @@ protocol EngineProtocol {
 public class StandardEngine: EngineProtocol {
     
     static let engine: StandardEngine = StandardEngine(rows: 10, cols: 10, refreshRate:1.0)
-    //static let edited: StandardEngine = StandardEngine(rows: 10, cols: 10, refreshRate:1.0)
-    
+
     var aliveCount = 0
     var bornCount = 0
     var deadCount = 0
     var emptyCount = 0
-    
     var timerOn = false
     var instantiationCount:  Int = 1
     var delegate: EngineDelegate?
@@ -210,16 +143,14 @@ public class StandardEngine: EngineProtocol {
                 ) { (t: Timer) in
                     
                     guard self.refreshTimer != nil else {
-                        // This was a problem for Van at the end of Lecture 6. Unclear on what resolution was.
                         return
                     }
                     _ = self.step()
-                    print("<< timer step >>")
-                    
+
                     if !self.timerOn {
                         self.refreshTimer?.invalidate()
                         self.refreshTimer = nil
-                        print("timer off!")
+                        // Timer is off!
                     }
                 }
             } else {
@@ -259,7 +190,6 @@ public class StandardEngine: EngineProtocol {
         // Create New Grid Instance
         grid = Grid(GridSize(rows: self.rows, cols: self.cols))
         delegate?.engineDidUpdate(withGrid: grid)
-
         engineUpdateNotify()
     }
     
@@ -272,15 +202,15 @@ public class StandardEngine: EngineProtocol {
 
         (0 ..< myGrid.size.cols).forEach { i in
             (0 ..< myGrid.size.rows).forEach { j in
-                
-                if (myGrid[(i,j)] == .empty) {
-                    emptyCount = emptyCount + 1
-                } else if (myGrid[(i,j)] == .born) {
-                    bornCount = bornCount + 1
-                } else if (myGrid[(i,j)] == .died) {
-                    deadCount = deadCount + 1
-                } else if (myGrid[(i,j)] == .alive){
-                    aliveCount = aliveCount + 1
+                switch myGrid[i,j] {
+                case .empty:
+                    emptyCount += 1
+                case .born:
+                    bornCount += 1
+                case .died:
+                    deadCount += 1
+                case .alive:
+                    aliveCount += 1
                 }
             }
         }

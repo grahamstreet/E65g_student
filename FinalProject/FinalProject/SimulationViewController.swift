@@ -16,7 +16,6 @@ class SimulationViewController: UIViewController , GridViewDataSource, EngineDel
         blue: CGFloat(255/255),
         alpha: CGFloat(0.8))
     
-    
     @IBOutlet weak var gridView: GridView!
     @IBOutlet weak var stepButton: UIButton!
   
@@ -26,14 +25,11 @@ class SimulationViewController: UIViewController , GridViewDataSource, EngineDel
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = backgroundColorForTab
-        
-        
         engine = StandardEngine.shared()
         engine.delegate = self
         gridView.myGrid = self
         self.gridView.gridRows = engine.rows
         self.gridView.gridCols = engine.cols
-        
         
         let nc = NotificationCenter.default
         let name = Notification.Name(rawValue: "EngineUpdate")
@@ -42,7 +38,6 @@ class SimulationViewController: UIViewController , GridViewDataSource, EngineDel
             object: nil,
             queue: nil) { (n) in
                 self.gridView.setNeedsDisplay()
-                print("Notification in sim viewcontroller in observed. \(n)")
         }
     }
 
@@ -112,8 +107,22 @@ class SimulationViewController: UIViewController , GridViewDataSource, EngineDel
         self.present(prompt, animated: true, completion: nil)
     }
 
-    public func gridSaveNotify( contents: GridContents)
-    {
+    @IBAction func resetClick(_ sender: Any) {
+      
+        engine.grid = Grid(GridSize(rows:engine.rows, cols: engine.cols))
+        self.gridView.setNeedsDisplay()
+        
+        let nc = NotificationCenter.default
+        let name = Notification.Name(rawValue: "EngineUpdate")
+        nc.addObserver(
+            forName: name,
+            object: nil,
+            queue: nil) { (n) in
+                self.gridView.setNeedsDisplay()
+        }
+        
+    }
+    public func gridSaveNotify( contents: GridContents) {
         let nc = NotificationCenter.default
         let name = Notification.Name(rawValue: "GridSave")
         let n = Notification(name: name,
@@ -121,8 +130,5 @@ class SimulationViewController: UIViewController , GridViewDataSource, EngineDel
                              userInfo: ["contents" : contents])
         nc.post(n)
     }
-
-
-
 }
 

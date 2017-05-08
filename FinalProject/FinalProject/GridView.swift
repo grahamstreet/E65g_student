@@ -1,6 +1,6 @@
 //
 //  GridView.swift
-//  Assignment3
+//  FinalProject
 //
 //  Created by Graham Street on 3/26/17.
 //  Copyright © 2017 Harvard Division of Continuing Education. All rights reserved.

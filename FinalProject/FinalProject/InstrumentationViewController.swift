@@ -3,6 +3,7 @@
 //  FinalProject
 //
 //  Created by Van Simmons on 1/15/17.
+//  Enhanced by Graham Street on 5/8/17
 //  Copyright © 2017 Harvard Division of Continuing Education. All rights reserved.
 //
 
@@ -19,14 +20,11 @@ let finalProjectURL = "https://dl.dropboxusercontent.com/u/7544475/S65g.json"
 
 class InstrumentationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    
     public var gridContents: [GridContents] = []
     
     var engine: StandardEngine!
     
     //MARK: TableView DataSource and Delegate
-    
-  
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -35,23 +33,18 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
         return gridContents.count
     }
 
-    
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let identifier = "basic"
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         let label = cell.contentView.subviews.first as! UILabel
         label.text = gridContents[indexPath.item].name
-        
         return cell
     }
     
+    // MARK: UI Outlets, Actions, Inspectables
     @IBOutlet weak var tableView: UITableView!
-    
     @IBOutlet weak var rowEntry: UITextField!
-    //@IBOutlet weak var colEntry: UITextField!
     @IBOutlet weak var rowStep: UIStepper!
-    @IBOutlet weak var colStep: UIStepper!
     @IBOutlet weak var refreshRate: UISlider!
     @IBOutlet weak var autoRefresh: UISwitch!
     @IBOutlet weak var refreshIndication: UILabel!
@@ -61,6 +54,7 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
         green: CGFloat(244/255),
         blue: CGFloat(255/255),
         alpha: CGFloat(0.8))
+    
     
     @IBAction func rowValueChanged(_ sender: UITextField) {
         guard let rowText = sender.text
@@ -72,14 +66,8 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
         
         rowStep.value = Double(num)
         StandardEngine.shared().updateRowCol(num: num)
-        
-        // since rows == cols,  update cols too.
-        colStep.value = Double(num)
-        StandardEngine.shared().updateRowCol(num: num)
-        
     }
     
-   
     
     @IBAction func rowStep(_ sender: UIStepper) {
         let numRows = Int(sender.value)
@@ -90,25 +78,15 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
         rowEntry.text = rowEntry.text
         
     }
+
     
-       
-    private func toTimeInterval(_ refreshRate : Float) -> TimeInterval {
-        return 1/Double(refreshRate)
-    }
-    
-    @IBAction func clicky(_ sender: Any) {
-        
-        print("Clicly")
-        
-        print("add row clicked.")
+    @IBAction func addRowClick(_ sender: Any) {
         let gridContents = GridContents(name: "untitled", cells: [], maxCount: 10)
         self.gridContents.append(gridContents)
         
         OperationQueue.main.addOperation ({
             self.tableView.reloadData()
         })
-        
-
     }
 
     @IBAction func refreshChanged(_ sender: UISlider) {
@@ -122,7 +100,6 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
     
 
     @IBAction func autoRefreshChanged(_ sender: UISwitch) {
-    
         StandardEngine.shared().refreshRate = TimeInterval(refreshRate.value)
 
         if sender.isOn {
@@ -132,19 +109,13 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
         }
     }
     
-    @IBAction func addRow(_ sender: UIButton) {
-        print("add row clicked.")
-        let gridContents = GridContents(name: "untitled", cells: [], maxCount: 10)
-        self.gridContents.append(gridContents)
-        
-        OperationQueue.main.addOperation ({
-            self.tableView.reloadData()
-        })
-
-
-        
-        
+    
+    // function to invert time adjustment to be sensible
+    private func toTimeInterval(_ refreshRate : Float) -> TimeInterval {
+        return 1/Double(refreshRate)
     }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -152,15 +123,14 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
         tableView.delegate = self
         engine = StandardEngine.shared()
     
+        // Set up instrumentation display
         self.view.backgroundColor = backgroundColorForTab
         rowEntry.text = "\(StandardEngine.shared().rows)"
-        //colEntry.text = "\(StandardEngine.shared().cols)"
         let liveRefreshDisplay = "\(refreshRate.value) hz"
         refreshIndication.text = liveRefreshDisplay
-        
         navigationController?.isNavigationBarHidden = true
         
-        // MARK: Get JSON from network
+        // MARK: Get JSON from Professor Simmons' Dropbox
         let fetcher = Fetcher()
         fetcher.fetchJSON(url: URL(string:finalProjectURL)!) { (json: Any?, message: String?) in
             guard message == nil else {
@@ -171,7 +141,7 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
                 print("no json")
                 return
             }
-            print(json)
+
             var maxCount: Int
             var tmp: Int
         
@@ -185,47 +155,38 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
                 maxCount = 0
                 tmp = 0
                 for j in 0..<(jsonContents.count) {
-                    if (jsonContents[j][0] > jsonContents[j][1])
-                    {
+                    if (jsonContents[j][0] > jsonContents[j][1]){
                         tmp = jsonContents[j][0]
-                    }
-                    else
-                    {
+                    } else {
                         tmp = jsonContents[j][1]
                     }
-                    if (tmp > maxCount)
-                    {
+                    
+                    if (tmp > maxCount) {
                         maxCount = tmp
                     }
+                    
                 }
                 let gridContents = GridContents(name: jsonTitle, cells: jsonContents, maxCount: maxCount)
                 self.gridContents.append(gridContents)
-                
-                
+        
             }
             OperationQueue.main.addOperation ({
                 self.tableView.reloadData()
             })
         }
-        // Do any additional setup after loading the view, typically from a nib.
+
         // MARK: Add a listener for "configuration saves"
-        
         let nc = NotificationCenter.default
         let name = Notification.Name(rawValue: "GridSave")
         nc.addObserver(
             forName: name,
             object: nil,
             queue: nil) { (n) in
-                print("Save observed\(n)")
                 if let contents = n.userInfo?["contents"] as? GridContents {
                     self.gridContents.append(contents)
-                    print("contents added!")
                     self.tableView.reloadData()
                 }
-            
-        
             }
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -239,11 +200,8 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
     }
 
     func alert(withMessage msg:String ) {
-        // create the alert
         let alert = UIAlertController(title: "ALERT", message: msg, preferredStyle: UIAlertControllerStyle.alert)
-        // add an action (button)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-        // show the alert
         self.present(alert, animated: true, completion: nil)
     }
     
@@ -256,8 +214,7 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
                 navigationItem.title = "Cancel"
                
                 vc.saveClosure = { newVal in
-                    
-                    // Update info in the table to reflect edits made in GridEditor
+                    // MARK: Propagate edits back to the table
                     self.gridContents[indexPath.row] = newVal
                     self.tableView.reloadData()
 
@@ -268,10 +225,6 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
                         let row = cell[0]
                         let col = cell[1]
                         self.engine.grid[row,col] = CellState.alive
-
-                        print("Grande Inner cell \(cell)")
-                        
-                       
                     }
                 }
             }

@@ -1,8 +1,9 @@
 //
 //  GridEditorViewController.swift
-//  Lecture11
+//  FinalProject
 //
 //  Created by Van Simmons on 4/17/17.
+//  Modified by Graham Street on 5/8/17
 //  Copyright © 2017 Harvard University. All rights reserved.
 //
 
@@ -13,12 +14,14 @@ class GridEditorViewController: UIViewController, GridViewDataSource {
     var saveClosure: ((GridContents) -> Void)?
     var gridContents: GridContents?
     var temporaryEngine: StandardEngine!
-    var editState: StandardEngine!
 
     @IBOutlet weak var gridView: GridView!
-    
     @IBOutlet weak var editableNameField: UITextField!
-    
+    @IBInspectable var backgroundColorForTab : UIColor = UIColor.init(
+        red: CGFloat(244/255),
+        green: CGFloat(244/255),
+        blue: CGFloat(255/255),
+        alpha: CGFloat(0.8))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,31 +39,26 @@ class GridEditorViewController: UIViewController, GridViewDataSource {
             }
             
             gridView.myGrid = self
-            //editState.delegate = self.editState
             self.editableNameField.text? = gridContents!.name
-            //self.navigationController?.navigationBar.topItem?.title = gridStruct?.name
-            
+            self.navigationController?.navigationBar.topItem?.title = gridContents!.name
+            self.view.backgroundColor = backgroundColorForTab
             gridView.setNeedsDisplay()
         }
-
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
-    
+    // per GridViewDataSource, must supply subscript
     public subscript (row: Int, col: Int) -> CellState {
         get { return temporaryEngine.grid[row,col] }
         set { temporaryEngine.grid[row,col] = newValue }
     }
 
-
+    // MARK: The Save action is the main attraction! then this grid is pushed to the simulation view
     @IBAction func saveClick(_ sender: Any) {
-        
-        
         gridContents!.name = editableNameField.text!
         gridContents!.cells = []
         (0 ..< temporaryEngine.grid.size.rows).forEach { row in
@@ -75,14 +73,8 @@ class GridEditorViewController: UIViewController, GridViewDataSource {
             let saveClosure = saveClosure {
             
             saveClosure(newValue)
-            print("save closure invoked with \(newValue)")
-            
             // Per instructs:  'Clicking a "Save" button on the GridEditor should cause the user to return to the main instrumentation page.'
             self.navigationController?.popViewController(animated: true)
         }
-
-        
     }
-   
-
 }
