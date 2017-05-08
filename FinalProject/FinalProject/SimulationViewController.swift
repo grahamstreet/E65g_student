@@ -109,7 +109,8 @@ class SimulationViewController: UIViewController , GridViewDataSource, EngineDel
 
     @IBAction func resetClick(_ sender: Any) {
       
-        engine.grid = Grid(GridSize(rows:engine.rows, cols: engine.cols))
+        // tell the model object to reset.
+        engine.resetEngine()
         self.gridView.setNeedsDisplay()
         
         let nc = NotificationCenter.default

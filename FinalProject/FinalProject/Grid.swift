@@ -216,6 +216,13 @@ public class StandardEngine: EngineProtocol {
         }
     }
     
+    // provide reset functionality at the model object layer
+    public func resetEngine() -> Void {
+        grid = Grid(GridSize(rows: self.rows, cols: self.cols))
+        delegate?.engineDidUpdate(withGrid: grid)
+        engineUpdateNotify()
+    }
+    
     public func engineUpdateNotify()
     {
         let nc = NotificationCenter.default
