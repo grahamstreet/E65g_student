@@ -96,6 +96,20 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
         return 1/Double(refreshRate)
     }
     
+    @IBAction func clicky(_ sender: Any) {
+        
+        print("Clicly")
+        
+        print("add row clicked.")
+        let gridContents = GridContents(name: "untitled", cells: [], maxCount: 10)
+        self.gridContents.append(gridContents)
+        
+        OperationQueue.main.addOperation ({
+            self.tableView.reloadData()
+        })
+        
+
+    }
 
     @IBAction func refreshChanged(_ sender: UISlider) {
         if (autoRefresh.isOn) {
